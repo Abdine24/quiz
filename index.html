@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuizMaster - Apprentissage Mobile</title>
+    <title>Préparation concours</title>
     <style>
         * {
             margin: 0;
@@ -18,21 +18,23 @@
             max-width: 100vw;
             overflow-x: hidden;
             transition: background 0.5s ease;
+            position: relative;
         }
 
         .container {
-            max-width: 414px;
+            max-width: 100%;
             margin: 0 auto;
             min-height: 100vh;
             padding: 0;
             position: relative;
+            overflow-x: hidden;
         }
 
         .header {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             position: sticky;
             top: 0;
@@ -52,7 +54,7 @@
         }
 
         .progress-container {
-            padding: 20px;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
@@ -83,125 +85,128 @@
 
         .score-display {
             display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            margin-bottom: 20px;
-        }
-
-        .timer-display {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            padding: 10px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-            margin: 0 5px;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
+            justify-content: center;
+            padding: 0 5px;
+            margin-bottom: 15px;
+            gap: 5px;
+            position: relative;
+            align-items: center;
         }
 
         .score-item {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            border-radius: 15px;
-            padding: 10px 15px;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             text-align: center;
-            flex: 1;
-            margin: 0 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6px;
         }
 
         .score-number {
             color: white;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
+            margin-bottom: 1px;
+            line-height: 1;
         }
 
         .score-label {
             color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1;
+        }
+
+        .timer-display {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            right: 10px;
+            bottom: 0;
         }
 
         .quiz-card {
-            margin: 20px;
+            margin: 10px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(25px);
-            border-radius: 25px;
-            padding: 30px 25px;
+            border-radius: 20px;
+            padding: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
             animation: slideUp 0.6s ease-out;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .quiz-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        .question-content {
+            flex: 1;
         }
 
         .question-number {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .question-text {
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             line-height: 1.4;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             position: relative;
             z-index: 1;
+            word-wrap: break-word;
+            white-space: normal;
         }
 
         .answers-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .answer-option {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 18px 20px;
+            border-radius: 12px;
+            padding: 12px 15px;
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            word-wrap: break-word;
+            white-space: normal;
+            line-height: 1.3;
         }
 
         .answer-option:hover {
@@ -242,9 +247,9 @@
         .result-card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 25px;
-            margin: 20px;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             text-align: center;
             animation: fadeIn 0.5s ease;
@@ -255,37 +260,49 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
         .result-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
+            font-size: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
         }
 
         .result-text {
             color: white;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 10px;
         }
 
         .result-explanation {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            word-wrap: break-word;
+            white-space: normal;
         }
 
         .next-button {
             background: linear-gradient(45deg, #4CAF50, #45a049);
             color: white;
             border: none;
-            border-radius: 15px;
-            padding: 15px 30px;
-            font-size: 16px;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-            margin-top: 15px;
+            margin-top: 10px;
             box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
         }
 
@@ -296,14 +313,14 @@
 
         .color-selector {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 10px;
+            right: 10px;
             z-index: 1000;
         }
 
         .color-toggle {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(15px);
@@ -312,7 +329,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             transition: all 0.3s ease;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
@@ -323,11 +340,11 @@
 
         .color-options {
             position: absolute;
-            bottom: 70px;
+            bottom: 60px;
             right: 0;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s ease;
@@ -341,10 +358,10 @@
         }
 
         .color-option {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
@@ -397,7 +414,7 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>🎓 QuizMaster</h1>
+            <h1>🎓 Préparation concours</h1>
             <p>Testez vos connaissances</p>
             <div class="timer-display" id="timer">00:00</div>
         </header>
@@ -412,7 +429,7 @@
         <div class="score-display">
             <div class="score-item">
                 <div class="score-number" id="correct-score">0</div>
-                <div class="score-label">Correctes</div>
+                <div class="score-label">Connectés</div>
             </div>
             <div class="score-item">
                 <div class="score-number" id="total-score">0</div>
@@ -421,9 +438,6 @@
             <div class="score-item">
                 <div class="score-number" id="percentage-score">0%</div>
                 <div class="score-label">Réussite</div>
-            </div>
-            <div class="score-item">
-                <div class="timer-display" id="timer">00:00</div>
             </div>
         </div>
 
@@ -536,14 +550,16 @@
             
             container.innerHTML = `
                 <div class="quiz-card">
-                    <div class="question-number">Question ${currentQuestion + 1}/${questions.length}</div>
-                    <div class="question-text">${question.question}</div>
-                    <div class="answers-container">
-                        ${question.options.map((option, index) => `
-                            <div class="answer-option" data-index="${index}">
-                                ${option}
-                            </div>
-                        `).join('')}
+                    <div class="question-content">
+                        <div class="question-number">Question ${currentQuestion + 1}/${questions.length}</div>
+                        <div class="question-text">${question.question}</div>
+                        <div class="answers-container">
+                            ${question.options.map((option, index) => `
+                                <div class="answer-option" data-index="${index}">
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
                     </div>
                 </div>
             `;
@@ -601,10 +617,13 @@
         function displayResult(isCorrect, explanation) {
             const container = document.getElementById('quiz-container');
             
-            container.innerHTML += `
+            const quizCard = document.querySelector('.quiz-card');
+            quizCard.innerHTML += `
                 <div class="result-card">
-                    <div class="result-icon">${isCorrect ? '✅' : '❌'}</div>
-                    <div class="result-text">${isCorrect ? 'Bonne réponse !' : 'Mauvaise réponse'}</div>
+                    <div class="result-header">
+                        <div class="result-icon">${isCorrect ? '✓' : '✗'}</div>
+                        <div class="result-text">${isCorrect ? 'Bonne réponse !' : 'Mauvaise réponse'}</div>
+                    </div>
                     <div class="result-explanation">${explanation}</div>
                     <button class="next-button" onclick="nextQuestion()">
                         ${currentQuestion < questions.length - 1 ? 'Question suivante' : 'Voir les résultats'}
